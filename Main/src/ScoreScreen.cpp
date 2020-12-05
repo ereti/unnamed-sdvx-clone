@@ -15,6 +15,7 @@
 #include <Beatmap/TinySHA1.hpp>
 #include "MultiplayerScreen.hpp"
 #include "ChatOverlay.hpp"
+#include "IR.hpp"
 
 class ScoreScreen_Impl : public ScoreScreen
 {
@@ -37,6 +38,8 @@ private:
 	float* m_gaugeSamples;
 	String m_jacketPath;
 	uint32 m_timedHits[2];
+	bool m_irUsed;
+	bool m_irSuccess;
 
 	HitWindow m_hitWindow = HitWindow::NORMAL;
 
@@ -348,7 +351,7 @@ public:
 				s.getDigest(digest);
 				hash = Utility::Sprintf("%08x%08x%08x%08x%08x", digest[0], digest[1], digest[2], digest[3], digest[4]);
 			}
-			else 
+			else
 			{
 				Log("Couldn't open the chart file for hashing, using existing hash.", Logger::Severity::Warning);
 			}
@@ -385,6 +388,12 @@ public:
 			newScore->hitWindowMiss = m_hitWindow.miss;
 
 			m_mapDatabase.AddScore(newScore);
+
+			if(g_gameConfig.GetString(GameConfigKeys::IRBaseURL) != "")
+			{
+				m_irUsed = true;
+				m_irSuccess = IR::PostScore(newScore);
+			}
 
 		 	chart->scores.Add(newScore);
 			chart->scores.Sort([](ScoreIndex* a, ScoreIndex* b)
@@ -580,7 +589,7 @@ public:
 			}
 			lua_settable(m_lua, -3);
 		}
-		
+
 		lua_setglobal(m_lua, "result");
 
 		lua_getglobal(m_lua, "result_set");
@@ -686,7 +695,7 @@ public:
 		}
 
 
-        
+
 
 		m_showStats = g_input.GetButton(Input::Button::FX_0);
 
@@ -777,7 +786,7 @@ public:
 			screenshot->SavePNG(screenshotPath);
 			screenshot.reset();
 		}
-		else 
+		else
 		{
 			screenshotPath = "Failed to capture screenshot";
 		}
