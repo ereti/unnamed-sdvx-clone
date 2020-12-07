@@ -3,6 +3,7 @@
 #include <Shared/Jobs.hpp>
 #include <Shared/Thread.hpp>
 #include "SkinHttp.hpp"
+#include "SkinIR.hpp"
 
 #define DISCORD_APPLICATION_ID "514489760568573952"
 
@@ -33,7 +34,7 @@ public:
 	void ApplySettings();
 	// Runs the application
 	int32 Run();
-	
+
 	void SetCommandLine(int32 argc, char** argv);
 	void SetCommandLine(const char* cmdLine);
 
@@ -133,6 +134,7 @@ private:
 	Thread m_updateThread;
 	class Beatmap* m_currentMap = nullptr;
 	SkinHttp m_skinHttp;
+	SkinIR m_skinIR;
 
 	float m_lastRenderTime;
 	float m_deltaTime;
