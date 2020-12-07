@@ -794,7 +794,7 @@ private:
 		lua_newtable(m_lua);
 		int songIndex = 0;
 
-		
+
 		if (sorted)
 		{
 			// sortVec should only have the current maps in the collection
@@ -806,7 +806,7 @@ private:
 			}
 		}
 		else {
-			
+
 			for (auto& song : collection)
 			{
 				m_PushSongToLua(song.second, ++songIndex);
@@ -836,6 +836,7 @@ private:
 			m_PushIntToTable("level", diff->level);
 			m_PushIntToTable("difficulty", diff->diff_index);
 			m_PushIntToTable("id", diff->id);
+			m_PushStringToTable("hash", diff->hash);
 			m_PushStringToTable("effector", diff->effector.c_str());
 			m_PushStringToTable("illustrator", diff->illustrator.c_str());
 			m_PushIntToTable("topBadge", static_cast<int>(Scoring::CalculateBestBadge(diff->scores)));
@@ -1518,7 +1519,7 @@ public:
 			// Transition to game
 			g_transition->TransitionTo(game);
 		});
-		
+
 		m_settDiag.onPressPractice.AddLambda([this]() {
 			if (m_multiplayer != nullptr) return;
 
