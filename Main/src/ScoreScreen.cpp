@@ -41,6 +41,7 @@ private:
 	String m_jacketPath;
 	uint32 m_timedHits[2];
 	int m_irState = IR::ResponseState["Unused"];
+	String m_chartHash;
 
 	//promote this to higher scope so i can use it in tick
 	String m_replayPath;
@@ -430,6 +431,8 @@ public:
 				Log("Couldn't open the chart file for hashing, using existing hash.", Logger::Severity::Warning);
 			}
 
+			m_chartHash = hash;
+
 			Path::CreateDir(Path::Absolute("replays/" + hash));
 			m_replayPath = Path::Normalize(Path::Absolute("replays/" + chart->hash + "/" + Shared::Time::Now().ToString() + ".urf"));
 			File replayFile;
@@ -547,6 +550,7 @@ public:
 		lua_settable(m_lua, -3);
 
 		m_PushIntToTable("irState", m_irState);
+		m_PushStringToTable("chartHash", m_chartHash);
 
 		//description (for displaying any errors, etc)
 		if(m_irState >= 20)
