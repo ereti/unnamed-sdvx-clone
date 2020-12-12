@@ -206,6 +206,7 @@ void GameConfig::InitDefaults()
 	// IR
 	Set(GameConfigKeys::IRBaseURL, "");
 	Set(GameConfigKeys::IRToken, "");
+	Set(GameConfigKeys::IRLowBandwidth, false);
 
 	//Gameplay
 	Set(GameConfigKeys::RandomizeChart, false);
